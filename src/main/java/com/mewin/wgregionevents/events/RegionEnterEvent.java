@@ -1,6 +1,6 @@
-package com.mewin.WGRegionEvents.events;
+package com.mewin.wgregionevents.events;
 
-import com.mewin.WGRegionEvents.MovementWay;
+import com.mewin.wgregionevents.MovementType;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -19,19 +19,13 @@ public class RegionEnterEvent extends RegionEvent implements Cancellable
      * @param player the player who triggered the event
      * @param movement the type of movement how the player enters the region
      */
-    public RegionEnterEvent(ProtectedRegion region, Player player, MovementWay movement, PlayerEvent parent)
+    public RegionEnterEvent(ProtectedRegion region, Player player, MovementType movement, PlayerEvent parent)
     {
         super(region, player, movement, parent);
         cancelled = false;
-        cancellable = true;
-        
-        if (movement == MovementWay.SPAWN
-            || movement == MovementWay.DISCONNECT)
-        {
-            cancellable = false;
-        }
+        cancellable = movement.isCancellable();
     }
-    
+
     /**
      * sets whether this event should be cancelled
      * when the event is cancelled the player will not be able to move into the region
@@ -40,14 +34,10 @@ public class RegionEnterEvent extends RegionEvent implements Cancellable
     @Override
     public void setCancelled(boolean cancelled)
     {
-        if (!this.cancellable)
-        {
-            return;
-        }
-        
-        this.cancelled = cancelled;
+        if (this.cancellable)
+            this.cancelled = cancelled;
     }
-    
+
     /**
      * retrieves whether this event will be cancelled/has been cancelled by any plugin
      * @return true if this event will be cancelled and the player will be stopped from moving
@@ -57,8 +47,8 @@ public class RegionEnterEvent extends RegionEvent implements Cancellable
     {
         return this.cancelled;
     }
-    
-    
+
+
     /**
      * sometimes you can not cancel an event, i.e. if a player entered a region by spawning inside of it
      * @return true, if you can cancel this event
@@ -67,14 +57,12 @@ public class RegionEnterEvent extends RegionEvent implements Cancellable
     {
         return this.cancellable;
     }
-    
+
     protected void setCancellable(boolean cancellable)
     {
         this.cancellable = cancellable;
-        
+
         if (!this.cancellable)
-        {
             this.cancelled = false;
-        }
     }
 }
