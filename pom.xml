@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mewin</groupId>
-    <artifactId>WorldGuardRegionEvents</artifactId>
-    <version>1.3.0</version>
+    <artifactId>WorldGuardRegionAPI</artifactId>
+    <version>1.4.0</version>
     <packaging>jar</packaging>
 
     <build>

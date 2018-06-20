@@ -1,4 +1,4 @@
-package com.mewin.worldguardregionevents;
+package com.mewin.worldguardregionapi;
 
 /**
  * describes the way how a player left/entered a region

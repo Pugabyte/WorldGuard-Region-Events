@@ -1,5 +1,5 @@
-name: WorldGuardRegionEvents
+name: WorldGuardRegionAPI
 author: mewin
 version: ${project.version}
-main: com.mewin.worldguardregionevents.WorldGuardRegionEvents
+main: com.mewin.worldguardregionapi.WorldGuardRegionAPI
 depend: [WorldGuard]

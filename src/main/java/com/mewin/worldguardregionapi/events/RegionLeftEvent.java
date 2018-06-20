@@ -1,6 +1,6 @@
-package com.mewin.worldguardregionevents.events;
+package com.mewin.worldguardregionapi.events;
 
-import com.mewin.worldguardregionevents.MovementType;
+import com.mewin.worldguardregionapi.MovementType;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;

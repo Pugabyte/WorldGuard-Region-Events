@@ -1,9 +1,9 @@
-package com.mewin.worldguardregionevents;
+package com.mewin.worldguardregionapi;
 
-import com.mewin.worldguardregionevents.events.RegionEnterEvent;
-import com.mewin.worldguardregionevents.events.RegionEnteredEvent;
-import com.mewin.worldguardregionevents.events.RegionLeaveEvent;
-import com.mewin.worldguardregionevents.events.RegionLeftEvent;
+import com.mewin.worldguardregionapi.events.RegionEnterEvent;
+import com.mewin.worldguardregionapi.events.RegionEnteredEvent;
+import com.mewin.worldguardregionapi.events.RegionLeaveEvent;
+import com.mewin.worldguardregionapi.events.RegionLeftEvent;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -22,10 +22,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -34,15 +32,11 @@ import java.util.Set;
  */
 public class PlayerListener implements Listener {
 	private WorldGuardPlugin worldGuard;
-	private WorldGuardRegionEvents plugin;
-
-	private Map<Player, Set<ProtectedRegion>> playerRegions;
+	private WorldGuardRegionAPI plugin;
 
 	public PlayerListener(WorldGuardPlugin worldGuard) {
-		this.plugin = WorldGuardRegionEvents.getInstance();
+		this.plugin = WorldGuardRegionAPI.getInstance();
 		this.worldGuard = worldGuard;
-
-		playerRegions = new HashMap<>();
 	}
 
 	@EventHandler
@@ -88,7 +82,8 @@ public class PlayerListener implements Listener {
 	}
 
 	private void clearRegions(Player player, MovementType movementType, PlayerEvent event) {
-		Set<ProtectedRegion> regions = playerRegions.remove(player);
+		Set<ProtectedRegion> regions = plugin.getRegions(player);
+		plugin.removePlayer(player);
 		if (regions != null) {
 			for (ProtectedRegion region : regions) {
 				RegionLeaveEvent leaveEvent = new RegionLeaveEvent(region, player, movementType, event);
@@ -104,10 +99,10 @@ public class PlayerListener implements Listener {
 		Set<ProtectedRegion> regions;
 		Set<ProtectedRegion> oldRegions;
 
-		if (playerRegions.get(player) == null) {
+		if (plugin.getPlayers().get(player) == null) {
 			regions = new HashSet<>();
 		} else {
-			regions = new HashSet<>(playerRegions.get(player));
+			regions = plugin.getRegions(player);
 		}
 
 		oldRegions = new HashSet<>(regions);
@@ -171,7 +166,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 		}
-		playerRegions.put(player, regions);
+		plugin.setRegions(player, regions);
 		return false;
 	}
 }
