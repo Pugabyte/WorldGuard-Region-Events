@@ -1,4 +1,5 @@
-name: wgregionevents
+name: WGRegionEvents
+author: mewin
 version: ${project.version}
-main: com.mewin.wgregionevents.wgregionevents
+main: com.mewin.wgregionevents.WGRegionEvents
 depend: [ WorldGuard ]

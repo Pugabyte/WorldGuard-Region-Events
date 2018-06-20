@@ -2,37 +2,38 @@ package com.mewin.wgregionevents;
 
 /**
  * describes the way how a player left/entered a region
+ *
  * @author mewin
  */
 public enum MovementType {
-   /**
-    * this way is used if a player entered/left a region by walking
-    */
-   MOVE,
-   /**
-    * this way is used if a player teleported into a region / out of a region
-    */
-   TELEPORT,
-   /**
-    * this way is used if a player spawned in a region
-    */
-   SPAWN,
-   /**
-    * this way is used if a player left a region by disconnecting
-    */
-   DISCONNECT(false);
+	/**
+	 * this way is used if a player entered/left a region by walking
+	 */
+	MOVE,
+	/**
+	 * this way is used if a player teleported into a region / out of a region
+	 */
+	TELEPORT,
+	/**
+	 * this way is used if a player spawned in a region
+	 */
+	SPAWN,
+	/**
+	 * this way is used if a player left a region by disconnecting
+	 */
+	DISCONNECT(false);
 
-   private boolean cancellable;
+	private boolean cancellable;
 
-   MovementType() {
-      this.cancellable = true;
-   }
+	MovementType() {
+		this.cancellable = true;
+	}
 
-   MovementType(boolean cancellable) {
-      this.cancellable = cancellable;
-   }
+	MovementType(boolean cancellable) {
+		this.cancellable = cancellable;
+	}
 
-   public boolean isCancellable() {
-      return cancellable;
-   }
+	public boolean isCancellable() {
+		return cancellable;
+	}
 }
