@@ -1,6 +1,6 @@
-package com.mewin.wgregionevents.events;
+package com.mewin.worldguardregionevents.events;
 
-import com.mewin.wgregionevents.MovementType;
+import com.mewin.worldguardregionevents.MovementType;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -37,7 +37,7 @@ public abstract class RegionEvent extends PlayerEvent {
 		return region;
 	}
 
-	public MovementType getMovementWay() {
+	public MovementType getMovementType() {
 		return this.movement;
 	}
 

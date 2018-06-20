@@ -1,4 +1,4 @@
-package com.mewin.wgregionevents;
+package com.mewin.worldguardregionevents;
 
 /**
  * describes the way how a player left/entered a region
@@ -6,21 +6,10 @@ package com.mewin.wgregionevents;
  * @author mewin
  */
 public enum MovementType {
-	/**
-	 * this way is used if a player entered/left a region by walking
-	 */
 	MOVE,
-	/**
-	 * this way is used if a player teleported into a region / out of a region
-	 */
 	TELEPORT,
-	/**
-	 * this way is used if a player spawned in a region
-	 */
-	SPAWN,
-	/**
-	 * this way is used if a player left a region by disconnecting
-	 */
+	WORLD_CHANGE(false),
+	SPAWN(false),
 	DISCONNECT(false);
 
 	private boolean cancellable;

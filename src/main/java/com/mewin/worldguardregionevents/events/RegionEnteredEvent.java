@@ -1,6 +1,6 @@
-package com.mewin.wgregionevents.events;
+package com.mewin.worldguardregionevents.events;
 
-import com.mewin.wgregionevents.MovementType;
+import com.mewin.worldguardregionevents.MovementType;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerEvent;
 /**
  * event that is triggered after a player entered a WorldGuard region
  *
- * @author mewin<mewin001   @   hotmail.de>
+ * @author mewin<mewin001       @       hotmail.de>
  */
 public class RegionEnteredEvent extends RegionEvent {
 	/**

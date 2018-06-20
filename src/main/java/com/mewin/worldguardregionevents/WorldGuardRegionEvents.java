@@ -1,4 +1,4 @@
-package com.mewin.wgregionevents;
+package com.mewin.worldguardregionevents;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.plugin.Plugin;
@@ -7,10 +7,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * @author mewin
  */
-public class WGRegionEvents extends JavaPlugin {
-	private static WGRegionEvents instance;
+public class WorldGuardRegionEvents extends JavaPlugin {
+	private static WorldGuardRegionEvents instance;
 
-	public WGRegionEvents() {
+	public WorldGuardRegionEvents() {
 		if (instance == null) {
 			instance = this;
 		} else {
@@ -18,7 +18,7 @@ public class WGRegionEvents extends JavaPlugin {
 		}
 	}
 
-	public static WGRegionEvents getInstance() {
+	public static WorldGuardRegionEvents getInstance() {
 		if (instance == null) {
 			throw new IllegalStateException();
 		}
@@ -34,7 +34,7 @@ public class WGRegionEvents extends JavaPlugin {
 			return;
 		}
 
-		WGRegionEventsListener listener = new WGRegionEventsListener(worldGuard);
+		PlayerListener listener = new PlayerListener(worldGuard);
 
 		getServer().getPluginManager().registerEvents(listener, getInstance());
 	}
