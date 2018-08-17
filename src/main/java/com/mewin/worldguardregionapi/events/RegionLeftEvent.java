@@ -3,6 +3,7 @@ package com.mewin.worldguardregionapi.events;
 import com.mewin.worldguardregionapi.MovementType;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerEvent;
 
 /**
@@ -18,7 +19,7 @@ public class RegionLeftEvent extends RegionEvent {
 	 * @param player   the player who triggered the event
 	 * @param movement the type of movement how the player left the region
 	 */
-	public RegionLeftEvent(ProtectedRegion region, Player player, MovementType movement, PlayerEvent parent) {
+	public RegionLeftEvent(ProtectedRegion region, Player player, MovementType movement, Event parent) {
 		super(region, player, movement, parent);
 	}
 }

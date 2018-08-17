@@ -1,15 +1,17 @@
 package com.mewin.worldguardregionapi;
 
-import com.mewin.worldguardregionapi.events.RegionEnterEvent;
+import com.mewin.worldguardregionapi.events.RegionEnteringEvent;
 import com.mewin.worldguardregionapi.events.RegionEnteredEvent;
-import com.mewin.worldguardregionapi.events.RegionLeaveEvent;
+import com.mewin.worldguardregionapi.events.RegionLeavingEvent;
 import com.mewin.worldguardregionapi.events.RegionLeftEvent;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -21,9 +23,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 
@@ -72,6 +76,18 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
+	public void onVehicleMove(VehicleMoveEvent event) {
+		if (event.getVehicle().getPassengers() == null) return;
+		List<Entity> passengers = event.getVehicle().getPassengers();
+		for (Entity entity : passengers) {
+			if (entity instanceof Player) {
+				Player player = (Player) entity;
+				updateRegions(player, MovementType.RIDE, player.getLocation(), event);
+			}
+		}
+	}
+
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		updateRegions(event.getPlayer(), MovementType.SPAWN, event.getPlayer().getLocation(), event);
 	}
@@ -86,16 +102,16 @@ public class PlayerListener implements Listener {
 		plugin.removePlayer(player);
 		if (regions != null) {
 			for (ProtectedRegion region : regions) {
-				RegionLeaveEvent leaveEvent = new RegionLeaveEvent(region, player, movementType, event);
+				RegionLeavingEvent leavingEvent = new RegionLeavingEvent(region, player, movementType, event);
 				RegionLeftEvent leftEvent = new RegionLeftEvent(region, player, movementType, event);
 
-				plugin.getServer().getPluginManager().callEvent(leaveEvent);
+				plugin.getServer().getPluginManager().callEvent(leavingEvent);
 				plugin.getServer().getPluginManager().callEvent(leftEvent);
 			}
 		}
 	}
 
-	private synchronized boolean updateRegions(final Player player, MovementType movement, Location newLocation, final PlayerEvent event) {
+	private synchronized boolean updateRegions(final Player player, MovementType movement, Location newLocation, final Event event) {
 		Set<ProtectedRegion> regions;
 		Set<ProtectedRegion> oldRegions;
 
@@ -122,7 +138,7 @@ public class PlayerListener implements Listener {
 
 		for (final ProtectedRegion region : applicableRegions) {
 			if (!regions.contains(region)) {
-				RegionEnterEvent regionEnterEvent = new RegionEnterEvent(region, player, movement, event);
+				RegionEnteringEvent regionEnterEvent = new RegionEnteringEvent(region, player, movement, event);
 
 				plugin.getServer().getPluginManager().callEvent(regionEnterEvent);
 
@@ -149,11 +165,11 @@ public class PlayerListener implements Listener {
 					itr.remove();
 					continue;
 				}
-				RegionLeaveEvent regionLeaveEvent = new RegionLeaveEvent(region, player, movement, event);
+				RegionLeavingEvent leavingEvent = new RegionLeavingEvent(region, player, movement, event);
 
-				plugin.getServer().getPluginManager().callEvent(regionLeaveEvent);
+				plugin.getServer().getPluginManager().callEvent(leavingEvent);
 
-				if (regionLeaveEvent.isCancelled()) {
+				if (leavingEvent.isCancelled()) {
 					regions.clear();
 					regions.addAll(oldRegions);
 					return true;

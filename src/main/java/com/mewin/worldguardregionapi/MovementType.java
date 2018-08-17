@@ -7,6 +7,7 @@ package com.mewin.worldguardregionapi;
  */
 public enum MovementType {
 	MOVE,
+	RIDE(false),
 	TELEPORT,
 	WORLD_CHANGE(false),
 	SPAWN(false),

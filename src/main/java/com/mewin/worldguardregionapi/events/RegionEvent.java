@@ -3,6 +3,7 @@ package com.mewin.worldguardregionapi.events;
 import com.mewin.worldguardregionapi.MovementType;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.*;
 
@@ -15,9 +16,9 @@ public abstract class RegionEvent extends PlayerEvent {
 
 	private ProtectedRegion region;
 	private MovementType movement;
-	private PlayerEvent parentEvent;
+	private Event parentEvent;
 
-	public RegionEvent(ProtectedRegion region, Player player, MovementType movement, PlayerEvent parent) {
+	public RegionEvent(ProtectedRegion region, Player player, MovementType movement, Event parent) {
 		super(player);
 		this.region = region;
 		this.movement = movement;
@@ -41,18 +42,7 @@ public abstract class RegionEvent extends PlayerEvent {
 		return this.movement;
 	}
 
-	/**
-	 * retrieves the event that has been used to create this event
-	 *
-	 * @return
-	 * @see PlayerMoveEvent
-	 * @see PlayerTeleportEvent
-	 * @see PlayerQuitEvent
-	 * @see PlayerKickEvent
-	 * @see PlayerJoinEvent
-	 * @see PlayerRespawnEvent
-	 */
-	public PlayerEvent getParentEvent() {
+	public Event getParentEvent() {
 		return parentEvent;
 	}
 }
