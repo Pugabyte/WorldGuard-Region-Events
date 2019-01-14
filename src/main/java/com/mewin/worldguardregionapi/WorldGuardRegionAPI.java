@@ -1,7 +1,10 @@
 package com.mewin.worldguardregionapi;
 
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,7 +38,7 @@ public class WorldGuardRegionAPI extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		WorldGuardPlugin worldGuard = getWorldGuard();
+		WorldGuard worldGuard = getWorldGuard();
 		if (worldGuard == null) {
 			getLogger().severe("Could not find WorldGuard, disabling.");
 			getServer().getPluginManager().disablePlugin(this);
@@ -47,11 +50,11 @@ public class WorldGuardRegionAPI extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(listener, getInstance());
 	}
 
-	private WorldGuardPlugin getWorldGuard() {
+	private WorldGuard getWorldGuard() {
 		Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
 
-		if (plugin instanceof WorldGuardPlugin)
-			return (WorldGuardPlugin) plugin;
+		if (plugin instanceof WorldGuard)
+			return (WorldGuard) plugin;
 		return null;
 	}
 

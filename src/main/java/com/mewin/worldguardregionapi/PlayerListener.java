@@ -4,9 +4,12 @@ import com.mewin.worldguardregionapi.events.RegionEnteringEvent;
 import com.mewin.worldguardregionapi.events.RegionEnteredEvent;
 import com.mewin.worldguardregionapi.events.RegionLeavingEvent;
 import com.mewin.worldguardregionapi.events.RegionLeftEvent;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -35,10 +38,10 @@ import java.util.Set;
  * @author mewin
  */
 public class PlayerListener implements Listener {
-	private WorldGuardPlugin worldGuard;
+	private WorldGuard worldGuard;
 	private WorldGuardRegionAPI plugin;
 
-	public PlayerListener(WorldGuardPlugin worldGuard) {
+	public PlayerListener(WorldGuard worldGuard) {
 		this.plugin = WorldGuardRegionAPI.getInstance();
 		this.worldGuard = worldGuard;
 	}
@@ -123,13 +126,15 @@ public class PlayerListener implements Listener {
 
 		oldRegions = new HashSet<>(regions);
 
-		RegionManager regionManager = worldGuard.getRegionManager(newLocation.getWorld());
+		RegionManager regionManager = worldGuard.getPlatform().getRegionContainer().get(BukkitAdapter.adapt(newLocation.getWorld()));
+		RegionContainer container = com.sk89q.worldguard.WorldGuard.getInstance().getPlatform().getRegionContainer();
+		RegionQuery query = container.createQuery();
 
 		if (regionManager == null) {
 			return false;
 		}
 
-		HashSet<ProtectedRegion> applicableRegions = new HashSet<>(regionManager.getApplicableRegions(newLocation).getRegions());
+		Set<ProtectedRegion> applicableRegions = query.getApplicableRegions(BukkitAdapter.adapt(newLocation)).getRegions();
 		ProtectedRegion globalRegion = regionManager.getRegion("__global__");
 		if (globalRegion != null) // just to be sure
 		{
