@@ -6,12 +6,14 @@ import com.mewin.worldguardregionapi.events.RegionLeavingEvent;
 import com.mewin.worldguardregionapi.events.RegionLeftEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -38,12 +40,10 @@ import java.util.Set;
  * @author mewin
  */
 public class PlayerListener implements Listener {
-	private WorldGuard worldGuard;
 	private WorldGuardRegionAPI plugin;
 
-	public PlayerListener(WorldGuard worldGuard) {
+	public PlayerListener() {
 		this.plugin = WorldGuardRegionAPI.getInstance();
-		this.worldGuard = worldGuard;
 	}
 
 	@EventHandler
@@ -126,7 +126,7 @@ public class PlayerListener implements Listener {
 
 		oldRegions = new HashSet<>(regions);
 
-		RegionManager regionManager = worldGuard.getPlatform().getRegionContainer().get(BukkitAdapter.adapt(newLocation.getWorld()));
+		RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(newLocation.getWorld()));
 		RegionContainer container = com.sk89q.worldguard.WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionQuery query = container.createQuery();
 
